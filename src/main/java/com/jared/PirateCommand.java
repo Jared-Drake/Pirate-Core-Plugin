@@ -33,12 +33,6 @@ public class PirateCommand implements CommandExecutor {
         }
 
         if (args[0].equalsIgnoreCase("island") || args[0].equalsIgnoreCase("islands")) {
-            sendToServer(player, "islands");
-            player.sendMessage("§bSending you to the islands...");
-            return true;
-        }
-
-        if (args[0].equalsIgnoreCase("island") || args[0].equalsIgnoreCase("islands")) {
 
             if (!server.equalsIgnoreCase("islands")) {
                 player.sendMessage("§bSending you to your island...");
