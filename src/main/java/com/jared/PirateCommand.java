@@ -25,6 +25,8 @@ public class PirateCommand implements CommandExecutor {
             return true;
         }
 
+        String server = plugin.getNetworkServerName();
+
         if (args.length == 0 || args[0].equalsIgnoreCase("profile")) {
             showProfile(player);
             return true;
@@ -36,14 +38,61 @@ public class PirateCommand implements CommandExecutor {
             return true;
         }
 
-        if (args[0].equalsIgnoreCase("lobby")) {
-            sendToServer(player, "lobby");
-            player.sendMessage("§bSending you to the lobby...");
+        if (args[0].equalsIgnoreCase("island") || args[0].equalsIgnoreCase("islands")) {
+
+            if (!server.equalsIgnoreCase("islands")) {
+                player.sendMessage("§bSending you to your island...");
+                sendToServer(player, "islands");
+                return true;
+            }
+
+            if (!plugin.getIslandManager().hasIsland(player.getUniqueId())) {
+                plugin.getIslandManager().createIsland(player.getUniqueId());
+                player.sendMessage("§aNew island created!");
+            }
+
+            plugin.getIslandManager().teleportToIsland(player.getUniqueId());
+            return true;
+        }
+
+        if (args[0].equalsIgnoreCase("create")) {
+
+            if (!server.equalsIgnoreCase("islands")) {
+                player.sendMessage("§cYou must be on the islands server to create an island!");
+                return true;
+            }
+
+            if (plugin.getIslandManager().hasIsland(player.getUniqueId())) {
+                player.sendMessage("§cYou already have an island!");
+                return true;
+            }
+
+            plugin.getIslandManager().createIsland(player.getUniqueId());
+            player.sendMessage("§aIsland created!");
+            return true;
+        }
+
+        if (args[0].equalsIgnoreCase("home")) {
+
+            if (!server.equalsIgnoreCase("islands")) {
+                player.sendMessage("§bSending you to your island...");
+                sendToServer(player, "islands");
+                return true;
+            }
+
+            if (!plugin.getIslandManager().hasIsland(player.getUniqueId())) {
+                player.sendMessage("§cYou don't have an island!");
+                return true;
+            }
+
+            plugin.getIslandManager().teleportToIsland(player.getUniqueId());
             return true;
         }
 
         player.sendMessage("§cUsage: /pirate profile, /pirate island, /pirate lobby");
         return true;
+
+
     }
 
     private void showProfile(Player player) {
