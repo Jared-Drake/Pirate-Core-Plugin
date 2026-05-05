@@ -1,0 +1,9 @@
+name: PirateCore
+version: 1.0.0
+main: com.jared.PirateCorePlugin
+api-version: '1.21'
+author: SmeltedMc
+commands:
+  pirate:
+    description: Main PirateCore command
+    usage: /pirate
