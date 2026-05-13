@@ -91,14 +91,45 @@ public class IslandManager {
         World world = Bukkit.getWorld("world");
         if (world == null) return;
 
-        Location loc = new Location(world, island.getX() + 0.5, 65, island.getZ() + 0.5);
-        loc.setYaw(0);
-        loc.setPitch(0);
+        Location loc = new Location(
+                world,
+                island.getHomeX(),
+                island.getHomeY(),
+                island.getHomeZ(),
+                island.getHomeYaw(),
+                island.getHomePitch()
+        );
 
-        if (Bukkit.getPlayer(uuid) != null) {
-            Bukkit.getPlayer(uuid).teleport(loc);
-            Bukkit.getPlayer(uuid).setFallDistance(0);
+        var player = Bukkit.getPlayer(uuid);
+        if (player != null) {
+            player.teleport(loc);
+            player.setFallDistance(0);
         }
+    }
+
+    public boolean setIslandHome(org.bukkit.entity.Player player) {
+        Island island = islands.get(player.getUniqueId());
+
+        if (island == null) {
+            return false;
+        }
+
+        if (!canBuild(player, player.getLocation())) {
+            return false;
+        }
+
+        Location loc = player.getLocation();
+
+        island.setHome(
+                loc.getX(),
+                loc.getY(),
+                loc.getZ(),
+                loc.getYaw(),
+                loc.getPitch()
+        );
+
+        save();
+        return true;
     }
 
 

@@ -19,7 +19,6 @@ public class PirateCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
         if (!(sender instanceof Player player)) {
             sender.sendMessage("Players only!");
             return true;
@@ -33,7 +32,6 @@ public class PirateCommand implements CommandExecutor {
         }
 
         if (args[0].equalsIgnoreCase("island") || args[0].equalsIgnoreCase("islands")) {
-
             if (!server.equalsIgnoreCase("islands")) {
                 player.sendMessage("§bSending you to your island...");
                 sendToServer(player, "islands");
@@ -50,7 +48,6 @@ public class PirateCommand implements CommandExecutor {
         }
 
         if (args[0].equalsIgnoreCase("create")) {
-
             if (!server.equalsIgnoreCase("islands")) {
                 player.sendMessage("§cYou must be on the islands server to create an island!");
                 return true;
@@ -67,7 +64,6 @@ public class PirateCommand implements CommandExecutor {
         }
 
         if (args[0].equalsIgnoreCase("home")) {
-
             if (!server.equalsIgnoreCase("islands")) {
                 player.sendMessage("§bSending you to your island...");
                 sendToServer(player, "islands");
@@ -83,10 +79,30 @@ public class PirateCommand implements CommandExecutor {
             return true;
         }
 
-        player.sendMessage("§cUsage: /pirate profile, /pirate island, /pirate lobby");
+        if (args[0].equalsIgnoreCase("sethome")) {
+            if (!server.equalsIgnoreCase("islands")) {
+                player.sendMessage("§cYou must be on the islands server to set your island home!");
+                return true;
+            }
+
+            if (!plugin.getIslandManager().hasIsland(player.getUniqueId())) {
+                player.sendMessage("§cYou need to create an island first!");
+                return true;
+            }
+
+            boolean success = plugin.getIslandManager().setIslandHome(player);
+
+            if (!success) {
+                player.sendMessage("§cYou can only set your home inside your own island!");
+                return true;
+            }
+
+            player.sendMessage("§aIsland home updated!");
+            return true;
+        }
+
+        player.sendMessage("§cUsage: /pirate profile, /pirate island, /pirate home, /pirate sethome");
         return true;
-
-
     }
 
     private void showProfile(Player player) {
@@ -107,7 +123,6 @@ public class PirateCommand implements CommandExecutor {
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Connect");
         out.writeUTF(serverName);
-
         player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
     }
 }

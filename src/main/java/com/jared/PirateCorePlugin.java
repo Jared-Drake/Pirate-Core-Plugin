@@ -29,8 +29,7 @@ public class PirateCorePlugin extends JavaPlugin {
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 
         getServer().getPluginManager().registerEvents(
-                new PlayerJoinListener(profileStorage),
-                this
+                new PlayerJoinListener(this, profileStorage), this
         );
 
         getCommand("pirate").setExecutor(
