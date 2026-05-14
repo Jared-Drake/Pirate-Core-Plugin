@@ -91,11 +91,16 @@ public class IslandManager {
         World world = Bukkit.getWorld("world");
         if (world == null) return;
 
+        int x = (int) Math.floor(island.getHomeX());
+        int z = (int) Math.floor(island.getHomeZ());
+
+        int safeY = world.getHighestBlockYAt(x, z) + 1;
+
         Location loc = new Location(
                 world,
-                island.getHomeX(),
-                island.getHomeY(),
-                island.getHomeZ(),
+                x + 0.5,
+                safeY,
+                z + 0.5,
                 island.getHomeYaw(),
                 island.getHomePitch()
         );
