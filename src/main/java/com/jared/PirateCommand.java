@@ -101,7 +101,70 @@ public class PirateCommand implements CommandExecutor {
             return true;
         }
 
-        player.sendMessage("§cUsage: /pirate profile, /pirate island, /pirate home, /pirate sethome");
+        if (args[0].equalsIgnoreCase("trust")) {
+            if (!server.equalsIgnoreCase("islands")) {
+                player.sendMessage("§cYou must be on the islands server to trust players!");
+                return true;
+            }
+
+            if (args.length < 2) {
+                player.sendMessage("§cUsage: /pirate trust <player>");
+                return true;
+            }
+
+            if (!plugin.getIslandManager().hasIsland(player.getUniqueId())) {
+                player.sendMessage("§cYou need an island first!");
+                return true;
+            }
+
+            Player target = plugin.getServer().getPlayerExact(args[1]);
+
+            if (target == null) {
+                player.sendMessage("§cThat player must be online to trust them for now.");
+                return true;
+            }
+
+            if (target.getUniqueId().equals(player.getUniqueId())) {
+                player.sendMessage("§cYou already own this island.");
+                return true;
+            }
+
+            plugin.getIslandManager().trustPlayer(player.getUniqueId(), target.getUniqueId());
+            player.sendMessage("§aTrusted " + target.getName() + " on your island!");
+            target.sendMessage("§aYou were trusted on " + player.getName() + "'s island!");
+            return true;
+        }
+
+        if (args[0].equalsIgnoreCase("untrust")) {
+            if (!server.equalsIgnoreCase("islands")) {
+                player.sendMessage("§cYou must be on the islands server to untrust players!");
+                return true;
+            }
+
+            if (args.length < 2) {
+                player.sendMessage("§cUsage: /pirate untrust <player>");
+                return true;
+            }
+
+            if (!plugin.getIslandManager().hasIsland(player.getUniqueId())) {
+                player.sendMessage("§cYou need an island first!");
+                return true;
+            }
+
+            Player target = plugin.getServer().getPlayerExact(args[1]);
+
+            if (target == null) {
+                player.sendMessage("§cThat player must be online to untrust them for now.");
+                return true;
+            }
+
+            plugin.getIslandManager().untrustPlayer(player.getUniqueId(), target.getUniqueId());
+            player.sendMessage("§eUntrusted " + target.getName() + " from your island.");
+            target.sendMessage("§cYou were untrusted from " + player.getName() + "'s island.");
+            return true;
+        }
+
+        player.sendMessage("§cUsage: /pirate profile, /pirate island, /pirate home, /pirate sethome, /pirate trust <player>, /pirate untrust <player>");
         return true;
     }
 

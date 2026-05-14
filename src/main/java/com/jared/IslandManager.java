@@ -152,6 +152,28 @@ public class IslandManager {
         }
     }
 
+    public boolean trustPlayer(UUID ownerUuid, UUID targetUuid) {
+        Island island = islands.get(ownerUuid);
+        if (island == null) return false;
+
+        island.trust(targetUuid);
+        save();
+        return true;
+    }
+
+    public boolean untrustPlayer(UUID ownerUuid, UUID targetUuid) {
+        Island island = islands.get(ownerUuid);
+        if (island == null) return false;
+
+        island.untrust(targetUuid);
+        save();
+        return true;
+    }
+
+    public boolean isOwnerOrTrusted(Island island, UUID uuid) {
+        return island.getOwner().equals(uuid) || island.isTrusted(uuid);
+    }
+
     public boolean canBuild(org.bukkit.entity.Player player, org.bukkit.Location location) {
         Island island = getIslandAt(location);
 
@@ -159,7 +181,7 @@ public class IslandManager {
             return false;
         }
 
-        return island.getOwner().equals(player.getUniqueId());
+        return isOwnerOrTrusted(island, player.getUniqueId());
     }
 
     public Island getIslandAt(org.bukkit.Location location) {

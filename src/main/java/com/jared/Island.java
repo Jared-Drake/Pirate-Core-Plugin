@@ -1,5 +1,7 @@
 package com.jared;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 public class Island {
@@ -14,6 +16,8 @@ public class Island {
     private float homeYaw;
     private float homePitch;
 
+    private final Set<UUID> trustedPlayers = new HashSet<>();
+
     public Island(UUID owner, int x, int z) {
         this.owner = owner;
         this.x = x;
@@ -26,37 +30,15 @@ public class Island {
         this.homePitch = 0;
     }
 
-    public UUID getOwner() {
-        return owner;
-    }
+    public UUID getOwner() { return owner; }
+    public int getX() { return x; }
+    public int getZ() { return z; }
 
-    public int getX() {
-        return x;
-    }
-
-    public int getZ() {
-        return z;
-    }
-
-    public double getHomeX() {
-        return homeX;
-    }
-
-    public double getHomeY() {
-        return homeY;
-    }
-
-    public double getHomeZ() {
-        return homeZ;
-    }
-
-    public float getHomeYaw() {
-        return homeYaw;
-    }
-
-    public float getHomePitch() {
-        return homePitch;
-    }
+    public double getHomeX() { return homeX; }
+    public double getHomeY() { return homeY; }
+    public double getHomeZ() { return homeZ; }
+    public float getHomeYaw() { return homeYaw; }
+    public float getHomePitch() { return homePitch; }
 
     public void setHome(double homeX, double homeY, double homeZ, float homeYaw, float homePitch) {
         this.homeX = homeX;
@@ -64,5 +46,21 @@ public class Island {
         this.homeZ = homeZ;
         this.homeYaw = homeYaw;
         this.homePitch = homePitch;
+    }
+
+    public boolean isTrusted(UUID uuid) {
+        return trustedPlayers.contains(uuid);
+    }
+
+    public void trust(UUID uuid) {
+        trustedPlayers.add(uuid);
+    }
+
+    public void untrust(UUID uuid) {
+        trustedPlayers.remove(uuid);
+    }
+
+    public Set<UUID> getTrustedPlayers() {
+        return trustedPlayers;
     }
 }
