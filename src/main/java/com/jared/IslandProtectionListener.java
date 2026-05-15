@@ -25,6 +25,8 @@ public class IslandProtectionListener implements Listener {
             return;
         }
 
+        if (event.getPlayer().hasPermission("pirate.admin")) return;
+
         if (!islandManager.canBuild(event.getPlayer(), event.getClickedBlock().getLocation())) {
             event.setCancelled(true);
             event.getPlayer().sendMessage("§cYou cannot interact here.");
@@ -33,6 +35,8 @@ public class IslandProtectionListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
+        if (event.getPlayer().hasPermission("pirate.admin")) return;
+
         if (!islandManager.canBuild(event.getPlayer(), event.getBlock().getLocation())) {
             event.setCancelled(true);
             event.getPlayer().sendMessage("§cYou cannot break blocks here!");
@@ -41,6 +45,8 @@ public class IslandProtectionListener implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
+        if (event.getPlayer().hasPermission("pirate.admin")) return;
+
         if (!islandManager.canBuild(event.getPlayer(), event.getBlock().getLocation())) {
             event.setCancelled(true);
             event.getPlayer().sendMessage("§cYou cannot place blocks here!");

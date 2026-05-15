@@ -7,3 +7,8 @@ commands:
   pirate:
     description: Main PirateCore command
     usage: /pirate
+
+    permissions:
+      pirate.admin:
+        description: Allows bypassing PirateCore protection.
+        default: op

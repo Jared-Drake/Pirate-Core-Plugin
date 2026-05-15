@@ -71,17 +71,36 @@ public class IslandManager {
     }
 
     public Island createIsland(UUID uuid) {
-        int x = (currentIndex % 10) * spacing;
-        int z = (currentIndex / 10) * spacing;
+        if (islands.containsKey(uuid)) {
+            return islands.get(uuid);
+        }
+
+        int index = 0;
+        int x;
+        int z;
+
+        do {
+            x = (index % 10) * spacing;
+            z = (index / 10) * spacing;
+            index++;
+        } while (isIslandLocationTaken(x, z));
 
         Island island = new Island(uuid, x, z);
         islands.put(uuid, island);
-        currentIndex++;
 
         generateIsland(island);
         save();
 
         return island;
+    }
+
+    private boolean isIslandLocationTaken(int x, int z) {
+        for (Island island : islands.values()) {
+            if (island.getX() == x && island.getZ() == z) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void teleportToIsland(UUID uuid) {
